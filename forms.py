@@ -2,24 +2,22 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, DateField, TextAreaField
 from wtforms.validators import DataRequired, Length
 
-# Classe base para formulario de cadastro de uma pessoa(nome, senha)
-class FormCadastrar(FlaskForm):
-    # Define a variavel 'nome' e 'senha' como tipo 'String' e usa validators que sao parametros para validacao do cadastro
+# Classe base para formulário de cadastro de uma pessoa (CPF, nome, senha)
+class RegisterForm(FlaskForm):
+    # Define os campos e usa 'validators' para validação
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=45)]) 
-    password = StringField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Cadastrar')
-    
 
-class FormLogar(FlaskForm):
-    # Verifica se o nome e a senha foram validados corretamente
+# Formulário de login
+class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    password = StringField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-
-class FormEvent(FlaskForm):
-    
+# Formulário de evento
+class EventForm(FlaskForm):
     event_name = StringField('Nome do evento', validators=[DataRequired()])
-    event_date = DateField('Data do evento', validators=[DataRequired()])
+    event_date = DateField('Data do evento', validators=[DataRequired()], format='%Y-%m-%d')  # Formato de data ISO
     event_description = TextAreaField('Descrição do evento', validators=[DataRequired()])
     submit = SubmitField('Cadastrar Evento')
