@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, DateField, TextAreaField
 from wtforms.validators import DataRequired, Length
 
-# Classe base para formulário de cadastro de uma pessoa (CPF, nome, senha)
+
 class RegisterForm(FlaskForm):
     # Define os campos e usa 'validators' para validação
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=45)]) 
