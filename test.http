@@ -1,0 +1,19 @@
+###
+POST http://localhost:5000/register
+Content-Type: application/x-www-form-urlencoded
+
+username=newuser&password=newpassword
+
+###
+
+###
+POST http://localhost:5000/login
+Content-Type: application/x-www-form-urlencoded
+
+username=newuser&password=newpassword
+
+###
+GET http://localhost:5000/dashboard
+
+###
+GET http://localhost:5000/logout

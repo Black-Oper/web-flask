@@ -5,6 +5,7 @@ from config import app, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import RegisterForm, LoginForm
 from models import Event, User
+from models import StatusEnum
 
 # rota principal do site
 @app.route("/")
@@ -70,14 +71,21 @@ def logout():
 @app.route('/dashboard', methods=['GET'])
 @login_required
 def dashboard():
-    my_events = Event.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', my_events=my_events)
-
+    filter_status = request.args.get('filter')
+    
+    if filter_status:
+        events = Event.query.filter_by(user_id=current_user.id, status=filter_status).all()
+    else:
+        events = Event.query.filter_by(user_id=current_user.id).all()
+        
+    return render_template('dashboard.html', events=events, filter=filter_status)
 
 # Rota para criar um novo evento
 @app.route('/new_event', methods=['GET', 'POST'])
 @login_required
 def new_event():
+
+    
     
     from forms import EventForm
     
@@ -88,8 +96,9 @@ def new_event():
         name = form.event_name.data
         date = form.event_date.data
         description = form.event_description.data
+        status = form.event_status.data
         
-        new_event = Event(name=name, date=date, description=description, user_id=current_user.id)
+        new_event = Event(name=name, date=date, description=description, status=status, user_id=current_user.id)
         
         db.session.add(new_event)
         db.session.commit()
@@ -117,6 +126,7 @@ def edit_event(event_id):
         event.name = form.event_name.data
         event.date = form.event_date.data
         event.description = form.event_description.data
+        event.status = form.event_status.data
 
         db.session.commit()
 
