@@ -3,7 +3,6 @@ from wtforms import StringField, PasswordField, SubmitField, DateField, TextArea
 from wtforms.validators import DataRequired, Length
 from models import StatusEnum
 
-
 class RegisterForm(FlaskForm):
     # Define os campos e usa 'validators' para validação
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=45)]) 

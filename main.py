@@ -65,21 +65,21 @@ def login():
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 # Rota para dashboard
 @app.route('/dashboard', methods=['GET'])
 @login_required
 def dashboard():
+    users = User.query.all()
     filter_status = request.args.get('filter')
-    
+
     if filter_status:
         events = Event.query.filter_by(user_id=current_user.id, status=filter_status).all()
     else:
         events = Event.query.filter_by(user_id=current_user.id).all()
-        
-    return render_template('dashboard.html', events=events, filter=filter_status)
 
+    return render_template('dashboard.html', events=events, filter=filter_status)
 # Rota para criar um novo evento
 @app.route('/new_event', methods=['GET', 'POST'])
 @login_required
@@ -140,10 +140,6 @@ def edit_event(event_id):
     
     event = Event.query.get(event_id)
     
-    # Verifica se o evento pertence ao usuário logado
-    if event.user_id != current_user.id:
-        return redirect(url_for('dashboard'))
-    
     form = EventForm()
     
     if form.validate_on_submit():
@@ -170,9 +166,6 @@ def edit_event(event_id):
 def delete_event(event_id):
     
     event = Event.query.get_or_404(event_id)
-
-    if event.user_id != current_user.id:
-        return redirect(url_for('dashboard'))
 
     db.session.delete(event)
     db.session.commit()

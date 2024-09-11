@@ -7,10 +7,9 @@ body {
     min-height: 100vh;
     margin: 0;
 }
-
-.container {
+section {
     width: 200px;
-    height: 200px;
+    height: 250px;
     background: #ffffff;
     padding: 100px;
     border-radius: 15px;

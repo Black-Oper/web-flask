@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     events = db.relationship('Event', backref='user', lazy=True)
-    
+
 
 class StatusEnum(enum.Enum):
     NOT_STARTED = 'Não Iniciada'
@@ -28,4 +28,3 @@ class Event(db.Model):
     description = db.Column(db.Text, nullable=False)
     status = db.Column(Enum(StatusEnum), nullable=False, default=StatusEnum.NOT_STARTED.name)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    
