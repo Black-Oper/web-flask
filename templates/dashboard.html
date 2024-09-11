@@ -6,86 +6,37 @@
     <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="static/css/styles.css" type="text/css">
     <style>
 
-        body {
-            background-color: #a4a4a4;
-            color: white;
-        }
-
-        :root {
-            --dashboard_background: #3e3e3e;
-            --dashboard_text: white;
-
-            --tasks_dark_color: #232323;
-            --tasks_border_color: rgb(122, 122, 122);
-            --taks_text_color: white;
-
-            --edit_button_color: rgb(255, 193, 7);
-
-            --new_task_button_color: rgb(13, 110, 253);
-            --new_task_button_border_color: rgb(0, 97, 208);
-
-            --filter_button_color: rgb(34,34,34);
-            --filter_border_color: rgb(34,34,34);
-            --filter_text_color: white;
-        }
-        .dark-mode {
-            background-color: var(--dashboard_background);
-            color: var(--dashboard_text);
-        }
-        .dark-mode .bg-secondary {
-            background-color: #121212;
-            color: white;
-        }
-        .dark-mode .card {
-            background-color: var(--tasks_dark_color);
-            color: white;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-        }
-        .dark-mode .btn-primary {
-            background-color: var(--new_task_button_color);
-            border-color: var(--new_task_button_border_color);
-        }
-        .dark-mode .btn-secondary {
-            background-color: var(--filter_button_color);
-            border-color: var(--filter_border_color);
-            color: var(--filter_text_color);
-        }
-        .dark-mode .btn-warning {
-            background-color: var(--edit_button_color);
-            border-color: var(--edit_button_color);
-        }
-        .dark-mode .btn-light {
-            background-color: var(--filter_button_color);
-            border-color: var(--filter_border_color);
-            color: var(--filter_text_color);
-        }
-        .dark-mode .table {
-            color: white;
-        }
-        .dark-mode .table th,
-        .dark-mode .table td {
-            border-color: var(--tasks_border_color);
-            background-color: var(--tasks_dark_color);
-            color: white;
-        }
     </style>
+    <script>
+        (function() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    })();
+    </script>
 </head>
 <body>
     <div class="container">
         <div class="d-flex justify-content-between align-items-center my-4">
-            <h1>Dashboard</h1>
             <div>
-                <button id="toggle-mode" class="btn btn-light" onclick="toggleDarkMode()">
+                <h1>Dashboard de @{{ current_user.name }}</h1>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary logout-button">Logout</a>
+            </div>
+            <div>
+                <button id="toggle-mode" class="btn btn-light toggle-button" onclick="toggleDarkMode()">
                     <i id="mode-icon" class="fas fa-sun"></i>
                 </button>
-                <a href="{{ url_for('new_event') }}" class="btn btn-primary">Criar Nova Tarefa</a>
-                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary {% if not filter %}active{% endif %}">Todas</a>
-                <a href="{{ url_for('dashboard', filter='NOT_STARTED') }}" class="btn btn-secondary {% if filter == 'NOT_STARTED' %}active{% endif %}">Não Iniciada</a>
-                <a href="{{ url_for('dashboard', filter='IN_PROGRESS') }}" class="btn btn-secondary {% if filter == 'IN_PROGRESS' %}active{% endif %}">Em Progresso</a>
-                <a href="{{ url_for('dashboard', filter='FINISHED') }}" class="btn btn-secondary {% if filter == 'FINISHED' %}active{% endif %}">Concluída</a>
+                <a href="{{ url_for('new_event') }}" class="btn btn-primary new-task-button">Criar Nova Tarefa</a>
+                <a href="{{ url_for('atribuir_tarefa') }}" class="btn btn-primary atribuir-task-button {% if not filter %}active{% endif %}">Atribuir Tarefa</a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary {% if not filter %}active{% endif %} filter-button">Todas</a>
+                <a href="{{ url_for('dashboard', filter='NOT_STARTED') }}" class="btn btn-secondary {% if filter == 'NOT_STARTED' %}active{% endif %} filter-button">Não Iniciada</a>
+                <a href="{{ url_for('dashboard', filter='IN_PROGRESS') }}" class="btn btn-secondary {% if filter == 'IN_PROGRESS' %}active{% endif %} filter-button">Em Progresso</a>
+                <a href="{{ url_for('dashboard', filter='FINISHED') }}" class="btn btn-secondary {% if filter == 'FINISHED' %}active{% endif %} filter-button">Concluída</a>
             </div>
         </div>
         <div class="card p-4">
@@ -102,47 +53,76 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for event in events %}
+                    {% if not events %}
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ event.name }}</td>
-                            <td>{{ event.description }}</td>
-                            <td>{{ event.date }}</td>
-                            <td>{{ event.status.value }}</td>
-                            <td>
-                                <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-warning">Editar</a>
-                                <a href="{{ url_for('delete_event', event_id=event.id) }}" class="btn btn-danger">Excluir</a>
-                            </td>
+                            <td colspan="6">Nenhuma tarefa encontrada.</td>
                         </tr>
-                    {% endfor %}
+                    {% else %}
+                        {% for event in events %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ event.name }}</td>
+                                <td>{{ event.description }}</td>
+                                <td>{{ event.date }}</td>
+                                <td>{{ event.status.value }}</td>
+                                <td>
+                                    <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-warning edit_button">Editar</a>
+                                    <form action="{{ url_for('delete_event', event_id=event.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete(event);">
+                                        <button type="submit" class="btn btn-danger delete_button">Excluir</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}    
                 </tbody>
             </table>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function toggleDarkMode() {
-            const body = document.body;
-            const icon = document.getElementById('mode-icon');
-            body.classList.toggle('dark-mode');
-            if(body.classList.contains('dark-mode')) {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
+            const body = document.documentElement;
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                body.classList.remove('dark-mode');
                 localStorage.setItem('theme', 'light');
+                document.getElementById('mode-icon').classList.replace('fa-moon', 'fa-sun');
+            } else {
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('mode-icon').classList.replace('fa-sun', 'fa-moon');
             }
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             const theme = localStorage.getItem('theme');
-            if(theme === 'dark') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('mode-icon').classList.remove('fa-sun');
-                document.getElementById('mode-icon').classList.add('fa-moon');
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+                document.getElementById('mode-icon').classList.replace('fa-sun', 'fa-moon');
+            } else {
+                document.getElementById('mode-icon').classList.replace('fa-moon', 'fa-sun');
             }
         });
+        function confirmDelete(event) {
+            event.preventDefault();
+
+            const theme = localStorage.getItem('theme');
+            const swalOptions = {
+                title: 'Tem certeza que deseja excluir?',
+                text: "Esta ação não pode ser desfeita!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Cancelar'
+            };
+
+            Swal.fire(swalOptions).then((result) => {
+                if (result.isConfirmed) {
+                    event.target.submit();
+                }
+            });
+        }
     </script>
 </body>
 </html>

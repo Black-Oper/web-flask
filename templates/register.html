@@ -10,6 +10,11 @@
     <div class="container vh-100 d-flex justify-content-center align-items-center">
         <div class="card p-4" style="width: 100%; max-width: 400px;">
             <h2 class="text-center mb-4">Registrar</h2>
+            {% if user_exists %}
+                <div role="alert">
+                    <p class="text-danger">Usuário já existe. Tente novamente!</p>
+                </div>
+            {% endif %}
             <form method="POST" action="{{ url_for('register') }}">
 
                 {{ form.hidden_tag() }}

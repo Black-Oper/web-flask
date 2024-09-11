@@ -1,0 +1,154 @@
+:root {
+    --dashboard_background: #3e3e3e;
+    --dashboard_text: white;
+
+    --tasks_dark_color: #232323;
+    --tasks_border_color: rgb(122, 122, 122);
+    --taks_text_color: white;
+
+    --new_task_button_color: rgb(13, 110, 253);
+    --new_task_button_border_color: rgb(0, 97, 208);
+
+    --edit_button_color: var(--new_task_button_color);
+
+    --filter_button_color: rgb(34,34,34);
+    --filter_border_color: rgb(34,34,34);
+    --filter_text_color: white;
+}
+body {
+    background: linear-gradient(to right, #93ddff, #9300dc);
+    color: white;
+}
+
+.filter-button {
+    background-color: white;
+    border-color: white;
+    color: black;
+}
+.filter-button.active {
+    background-color: rgb(225, 225, 225);
+    border-color: rgb(225, 225, 225);
+    color: black;
+}
+
+.logout-button {
+    color: red;
+    background-color: white;
+    border-color: white;
+}
+.logout-button:hover {
+    color: white;
+    background-color: red;
+    border-color: red;
+}
+.edit_button {
+    color: white;
+    background-color: var(--edit_button_color);
+}
+.delete_button {
+    color: white;
+    background-color: rgb(175, 74, 74);
+}
+.back-to-dashboard-button {
+    background-color: white !important;
+    border-color: var(--new_task_button_color) !important;
+    color: var(--new_task_button_color) !important;
+}
+.back-to-dashboard-button:hover {
+    background-color: var(--new_task_button_color) !important;
+    border-color: var(--new_task_button_color) !important;
+    color: white !important;
+}
+.dark-mode {
+    background: linear-gradient(to right, #2c3e50, #4ca1af);
+    color: var(--dashboard_text);
+}
+.dark-mode body {
+    background: linear-gradient(to right, #2c3e50, #4ca1af);
+}
+.dark-mode .bg-secondary {
+    background-color: #121212;
+    color: white;
+}
+.dark-mode .logout-button {
+    color: white;
+    background-color: red;
+    border-color: red;
+}
+.dark-mode .logout-button:hover {
+    color: white;
+    background-color: rgb(129, 0, 0);
+    border-color: rgb(129, 0, 0);
+}
+.dark-mode .card {
+    background-color: var(--tasks_dark_color);
+    color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+.dark-mode .new-task-button, .atribuir-task-button {
+    background-color: var(--new_task_button_color);
+    border-color: var(--new_task_button_border_color);
+}
+.dark-mode .filter-button {
+    background-color: var(--filter_button_color);
+    border-color: var(--filter_border_color);
+    color: var(--filter_text_color);
+}
+.dark-mode .filter-button:hover {
+    background-color: rgb(53, 53, 53);
+    border-color: rgb(53, 53, 53);
+    color: white;
+}
+.dark-mode .filter-button.active {
+    background-color: rgb(53, 53, 53);
+    border-color: rgb(53, 53, 53);
+    color: white;
+}
+.dark-mode .edit_button {
+    color: white;
+    background-color: var(--edit_button_color);
+    border-color: var(--edit_button_color);
+}
+.dark-mode .delete_button {
+    color: white;
+    background-color: rgb(175, 74, 74);
+}
+.dark-mode .toggle-button {
+    background-color: var(--filter_button_color) !important;
+    border-color: var(--filter_border_color);
+    color: var(--filter_text_color);
+}
+.dark-mode .table {
+    color: white;
+    background-color: var(--tasks_dark_color);
+    border-color: var(--tasks_border_color);
+}
+.dark-mode .table th,
+.dark-mode .table td {
+    border-color: var(--tasks_border_color);
+    background-color: var(--tasks_dark_color);
+    color: white;
+}
+
+.dark-mode .swal2-popup {
+background-color: #333;
+color: white;
+}
+
+.dark-mode .swal2-title {
+color: white;
+}
+
+.dark-mode .swal2-text {
+color: white;
+}
+
+.dark-mode .swal2-confirm {
+background-color: #d33;
+border-color: #d33;
+}
+
+.dark-mode .swal2-cancel {
+background-color: #3085d6;
+border-color: #3085d6;
+}
