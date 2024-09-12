@@ -5,7 +5,6 @@ from config import app, db
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import RegisterForm, LoginForm
 from models import Event, User
-from models import StatusEnum
 
 # rota principal do site
 @app.route("/", methods=['GET', 'POST'])
@@ -67,6 +66,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+
 # Rota para dashboard
 @app.route('/dashboard', methods=['GET'])
 @login_required
@@ -81,56 +81,32 @@ def dashboard():
 
     return render_template('dashboard.html', events=events, filter=filter_status)
 
+
 # Rota para criar um novo evento
 @app.route('/new_event', methods=['GET', 'POST'])
 @login_required
 def new_event():
-
     from forms import EventForm
     
     form = EventForm()
-    
+
     if form.validate_on_submit():
-        
         name = form.event_name.data
         date = form.event_date.data
         description = form.event_description.data
         status = form.event_status.data
+        user_id = form.user_id.data
         
-        new_event = Event(name=name, date=date, description=description, status=status, user_id=current_user.id)
+        
+        # Criação do novo evento com o user_id recebido
+        new_event = Event(name=name, date=date, description=description, status=status, user_id=user_id)
         
         db.session.add(new_event)
         db.session.commit()
         
         return redirect(url_for('dashboard'))
     
-    return render_template('new_event.html', form=form)
-
-@app.route('/event_assignment', methods=['GET', 'POST'])
-@login_required
-def event_assignment():
-    from forms import EventForm
-    _id = request.args.get('id')
-    print(f"User ID from request: {_id}")
-
-    form = EventForm()
-
-    if form.validate_on_submit():
-        name = form.event_name.data
-        date = form.event_date.data
-        description = form.event_description.data
-        status = form.event_status.data
-
-        new_event = Event(name=name, date=date, description=description, status=status, user_id=_id)
-        print(f"New Event User ID: {new_event.user_id}")
-
-        db.session.add(new_event)
-        db.session.commit()
-
-        flash(f'Tarefa "{name}" atribuída com sucesso!', 'success')
-        return redirect(url_for('atribuir_tarefa'))
-
-    return render_template('new_event.html', form=form, user_id=_id)
+    return render_template('new_event.html', user_id=id, form=form)
 
 
 # Rota para editar um evento
@@ -140,14 +116,15 @@ def edit_event(event_id):
     from forms import EventForm
     
     event = Event.query.get(event_id)
-    
+
     form = EventForm()
-    
+
     if form.validate_on_submit():
         event.name = form.event_name.data
         event.date = form.event_date.data
         event.description = form.event_description.data
         event.status = form.event_status.data
+        event.user_id = form.user_id.data
 
         db.session.commit()
 
@@ -172,15 +149,6 @@ def delete_event(event_id):
     db.session.commit()
 
     return redirect(url_for('dashboard'))
-
-
-@app.route('/atribuir_tarefa', methods=['GET', 'POST'])
-@login_required
-def atribuir_tarefa():
-    users = User.query.all()
-    event = Event.query.all()
-    
-    return render_template('tasksatt.html', users=users, event=event)
 
 # Executar o Flask
 if __name__ == "__main__":

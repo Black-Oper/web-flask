@@ -12,7 +12,6 @@
         <div class="options">
             <a href="{{ url_for('logout') }}" class="btn btn-secondary logout-button">Logout</a>
             <a href="{{ url_for('new_event') }}" class="btn btn-primary new-task-button">Criar Nova Tarefa</a>
-            <a href="{{ url_for('atribuir_tarefa') }}" class="btn btn-primary atribuir-task-button {% if not filter %}active{% endif %}">Atribuir Tarefa</a>
             <a href="{{ url_for('dashboard') }}" class="btn btn-secondary {% if not filter %}active{% endif %} filter-button">Todas</a>
             <a href="{{ url_for('dashboard', filter='NOT_STARTED') }}" class="btn btn-secondary {% if filter == 'NOT_STARTED' %}active{% endif %} filter-button">Não Iniciada</a>
             <a href="{{ url_for('dashboard', filter='IN_PROGRESS') }}" class="btn btn-secondary {% if filter == 'IN_PROGRESS' %}active{% endif %} filter-button">Em Progresso</a>
