@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+/* css reset */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Indie Flower", cursive;
+}
+
+body{
+    background-color: #363f49;
+    height: 100%;
+    width: 100%;
+}
+
+.header{
+    background-color: #f6efe7;
+    color: #363f49;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 1px 1px 10px #2c2c2c;
+    height: 100px;
+}
+
+h2{
+    font-size: 2.5rem;
+    padding-top: 10px;
+}
+
+.content{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 400px;
+    width: 400px;
+    background-color: #57e4eb;
+    margin-left: 565px;
+    margin-top: 100px;
+    box-shadow: 1px 1px 10px #2c2c2c;
+    transform: rotate(1deg);
+}
+
+.content img{
+    height: 100px;
+    width: 70px;
+    margin-left: 170px;
+    margin-top: -50px;
+}
+
+.content a{
+    text-decoration: none;
+    background-color: #57e4eb;
+    color: #363f49;
+    font-size: 1.5rem;
+    transition: 0.3s ease-in;
+}
+
+.content a:hover{
+    text-decoration: underline;
+    background-color: #57e4eb;
+}
+
+.content a.register{
+    color: #b90000;
+    margin-left: 36px;
+    margin-top: 15px;
+}
+
+.form{
+    margin-left: 50px;
+    font-size: 1.5rem;
+    input{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 5px;
+        width: 300px;
+        border: none;
+        border-radius: 5px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}
+
+.btn{
+    margin-top: 10px;
+    margin-left: 50px;
+    padding: 5px;
+    width: 300px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #363f49;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 0.2s ease-in;
+}
+
+.btn:hover{
+    background-color: #363f49;
+    color: #ffffff;
+}
+
+.text-danger{
+    color: #b90000;
+    margin-left: 48px;
+}

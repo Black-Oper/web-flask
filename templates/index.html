@@ -3,23 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
-    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/index.css" type="text/css">
 </head>
 <body>
-    <section>
+    <div class="header">
         <h2>Bem-Vindo!</h2>
-        <form>
-            <div>
-                <h2>
-                    <a href="{{ url_for('register') }}" class="button">
-                        <br><h2>Registrar</h2>
-                    </a>
-                    <a href="{{ url_for('login') }}" class="button">
-                        <br><h2>Login</h2>
-                    </a>
-                </h2>
-            </div>
-        </form>
-    </section>
+    </div>
+    <div class="content">
+        <img src="../static/img/pin.png">
+        <button class="button">
+            <br><a href="{{ url_for('login') }}">Login</a>
+        </button>
+        <button class="button">
+            <br><a href="{{ url_for('register') }}">Registrar</a>
+        </button>
+    </div>
 </body>
 </html>

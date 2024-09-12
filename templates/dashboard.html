@@ -4,125 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="static/css/styles.css" type="text/css">
-    <style>
-
-    </style>
-    <script>
-        (function() {
-        const theme = localStorage.getItem('theme');
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark-mode');
-        }
-    })();
-    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center my-4">
-            <div>
-                <h1>Dashboard de @{{ current_user.name }}</h1>
-                <a href="{{ url_for('logout') }}" class="btn btn-secondary logout-button">Logout</a>
-            </div>
-            <div>
-                <button id="toggle-mode" class="btn btn-light toggle-button" onclick="toggleDarkMode()">
-                    <i id="mode-icon" class="fas fa-sun"></i>
-                </button>
-                <a href="{{ url_for('new_event') }}" class="btn btn-primary new-task-button">Criar Nova Tarefa</a>
-                <a href="{{ url_for('atribuir_tarefa') }}" class="btn btn-primary atribuir-task-button {% if not filter %}active{% endif %}">Atribuir Tarefa</a>
-                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary {% if not filter %}active{% endif %} filter-button">Todas</a>
-                <a href="{{ url_for('dashboard', filter='NOT_STARTED') }}" class="btn btn-secondary {% if filter == 'NOT_STARTED' %}active{% endif %} filter-button">Não Iniciada</a>
-                <a href="{{ url_for('dashboard', filter='IN_PROGRESS') }}" class="btn btn-secondary {% if filter == 'IN_PROGRESS' %}active{% endif %} filter-button">Em Progresso</a>
-                <a href="{{ url_for('dashboard', filter='FINISHED') }}" class="btn btn-secondary {% if filter == 'FINISHED' %}active{% endif %} filter-button">Concluída</a>
-            </div>
-        </div>
-        <div class="card p-4">
-            <h2>Tarefas</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Data</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if not events %}
-                        <tr>
-                            <td colspan="6">Nenhuma tarefa encontrada.</td>
-                        </tr>
-                    {% else %}
-                        {% for event in events %}
-                            <tr>
-                                <td>{{ loop.index }}</td>
-                                <td>{{ event.name }}</td>
-                                <td>{{ event.description }}</td>
-                                <td>{{ event.date }}</td>
-                                <td>{{ event.status.value }}</td>
-                                <td>
-                                    <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-warning edit_button">Editar</a>
-                                    <form action="{{ url_for('delete_event', event_id=event.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete(event);">
-                                        <button type="submit" class="btn btn-danger delete_button">Excluir</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}    
-                </tbody>
-            </table>
+    <div class="header">
+        <h2>Dashboard de {{ current_user.name }}</h2>
+        <div class="options">
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary logout-button">Logout</a>
+            <a href="{{ url_for('new_event') }}" class="btn btn-primary new-task-button">Criar Nova Tarefa</a>
+            <a href="{{ url_for('atribuir_tarefa') }}" class="btn btn-primary atribuir-task-button {% if not filter %}active{% endif %}">Atribuir Tarefa</a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary {% if not filter %}active{% endif %} filter-button">Todas</a>
+            <a href="{{ url_for('dashboard', filter='NOT_STARTED') }}" class="btn btn-secondary {% if filter == 'NOT_STARTED' %}active{% endif %} filter-button">Não Iniciada</a>
+            <a href="{{ url_for('dashboard', filter='IN_PROGRESS') }}" class="btn btn-secondary {% if filter == 'IN_PROGRESS' %}active{% endif %} filter-button">Em Progresso</a>
+            <a href="{{ url_for('dashboard', filter='FINISHED') }}" class="btn btn-secondary {% if filter == 'FINISHED' %}active{% endif %} filter-button">Concluída</a>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function toggleDarkMode() {
-            const body = document.documentElement;
-            const theme = localStorage.getItem('theme');
-            if (theme === 'dark') {
-                body.classList.remove('dark-mode');
-                localStorage.setItem('theme', 'light');
-                document.getElementById('mode-icon').classList.replace('fa-moon', 'fa-sun');
-            } else {
-                body.classList.add('dark-mode');
-                localStorage.setItem('theme', 'dark');
-                document.getElementById('mode-icon').classList.replace('fa-sun', 'fa-moon');
-            }
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            const theme = localStorage.getItem('theme');
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark-mode');
-                document.getElementById('mode-icon').classList.replace('fa-sun', 'fa-moon');
-            } else {
-                document.getElementById('mode-icon').classList.replace('fa-moon', 'fa-sun');
-            }
-        });
-        function confirmDelete(event) {
-            event.preventDefault();
-
-            const theme = localStorage.getItem('theme');
-            const swalOptions = {
-                title: 'Tem certeza que deseja excluir?',
-                text: "Esta ação não pode ser desfeita!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sim, excluir!',
-                cancelButtonText: 'Cancelar'
-            };
-
-            Swal.fire(swalOptions).then((result) => {
-                if (result.isConfirmed) {
-                    event.target.submit();
-                }
-            });
-        }
-    </script>
+    <div class="content">
+        <table class="table">
+            <tbody>
+                {% for event in events %}
+                <tr class="{% if event.status.value == 'Em Progresso' %}in-progress{% elif event.status.value == 'Concluída' %}finished{% else %}not-started{% endif %}">
+                        <td><img src="{{ url_for('static', filename='img/pin.png') }}" alt="Pin"></td>
+                        <td class="negrito">{{ event.name }}</td>
+                        <td>{{ event.description }}</td>
+                        <td>{{ event.date }}</td>
+                        <td>{{ event.status.value }}</td>
+                        <td>
+                            <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-warning edit_button">Editar</a>
+                            <form action="{{ url_for('delete_event', event_id=event.id) }}" method="post" style="display:inline;" onsubmit="return confirmDelete(event);">
+                                <button type="submit" class="btn btn-danger delete_button">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

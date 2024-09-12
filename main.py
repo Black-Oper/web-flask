@@ -1,5 +1,5 @@
 # seção de imports
-from flask import redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from config import app, db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -80,6 +80,7 @@ def dashboard():
         events = Event.query.filter_by(user_id=current_user.id).all()
 
     return render_template('dashboard.html', events=events, filter=filter_status)
+
 # Rota para criar um novo evento
 @app.route('/new_event', methods=['GET', 'POST'])
 @login_required
@@ -171,6 +172,7 @@ def delete_event(event_id):
     db.session.commit()
 
     return redirect(url_for('dashboard'))
+
 
 @app.route('/atribuir_tarefa', methods=['GET', 'POST'])
 @login_required

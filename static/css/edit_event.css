@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+
+/* css reset */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Indie Flower", cursive;
+}
+
+body{
+    background-image: url('../img/Papers.webp');
+    background-size: cover;
+    /* deixar o fundo borrado */
+    backdrop-filter: blur(10px);
+    height: 100%;
+    width: 100%;
+}
+
+.header{
+    background-color: #f6efe7;
+    color: #363f49;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 1px 1px 10px #2c2c2c;
+    height: 100px;
+}
+
+h2{
+    font-size: 2.5rem;
+    padding-top: 10px;
+}
+
+.content{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 566px;
+    width: 500px;
+    background-color: #feff66;
+    margin-left: 510px;
+    margin-top: 20px;
+    box-shadow: 1px 1px 10px #2c2c2c;
+}
+
+.content img{
+    height: 125px;
+    width: 90px;
+    margin-left: 205px;
+    margin-top: -60px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-label{
+    font-size: 1.5rem;
+}
+
+.form-control{
+    width: 300px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+    padding: 5px;
+}
+
+.btn{
+    margin-top: 10px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #363f49;
+    color: #f6efe7;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover{
+    background-color: #f6efe7;
+    color: #363f49;
+}
+
+button{
+    margin-top: 10px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #b62323;
+    color: #f6efe7;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover{
+    background-color: #f6efe7;
+    color: #363f49;
+}
